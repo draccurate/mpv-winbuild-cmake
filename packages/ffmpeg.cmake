@@ -1,10 +1,10 @@
 ExternalProject_Add(ffmpeg
     DEPENDS
         amf-headers
-        ${nvcodec_headers}
+        nvcodec-headers
         bzip2
+        gmp
         lame
-        libsrt
         libass
         libpng
         libsoxr
@@ -17,25 +17,27 @@ ExternalProject_Add(ffmpeg
         opus
         speex
         vorbis
-        libxml2
         libvpl
-        shaderc
+        libxml2
         libplacebo
+        shaderc
         dav1d
-        openal-soft
+        mbedtls
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
     SOURCE_DIR ${SOURCE_LOCATION}
-    GIT_CLONE_FLAGS "--sparse --filter=tree:0"
-    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !tests/ref/fate"
+    GIT_TAG ea3d24bbe3c58b171e55fe2151fc7ffaca3ab3d2
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/configure
         --cross-prefix=${TARGET_ARCH}-
         --prefix=${MINGW_INSTALL_PREFIX}
         --arch=${TARGET_CPU}
         --target-os=mingw32
+        --target-exec=wine
         --pkg-config-flags=--static
         --enable-cross-compile
-        --enable-runtime-cpudetect
+
+        --disable-gpl
+        --disable-nonfree
         --enable-version3
         --enable-static
         --disable-shared
