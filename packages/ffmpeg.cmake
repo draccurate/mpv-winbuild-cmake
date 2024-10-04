@@ -23,9 +23,11 @@ ExternalProject_Add(ffmpeg
         shaderc
         dav1d
         mbedtls
+		vapoursynth
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
     SOURCE_DIR ${SOURCE_LOCATION}
-    GIT_TAG ea3d24bbe3c58b171e55fe2151fc7ffaca3ab3d2
+    #GIT_TAG ea3d24bbe3c58b171e55fe2151fc7ffaca3ab3d2
+    #PATCH_COMMAND ${EXEC} git apply ${CMAKE_CURRENT_SOURCE_DIR}/ffmpeg-*.patch
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/configure
         --cross-prefix=${TARGET_ARCH}-
@@ -36,14 +38,15 @@ ExternalProject_Add(ffmpeg
         --pkg-config-flags=--static
         --enable-cross-compile
 
-        --disable-gpl
-        --disable-nonfree
+       	--enable-ffnvcodec
         --enable-version3
         --enable-static
         --disable-shared
         --disable-vulkan
         --disable-iconv
         --enable-stripping
+		
+		--enable-vapoursynth
 
         --disable-muxers
         --disable-decoders
@@ -68,7 +71,7 @@ ExternalProject_Add(ffmpeg
         --enable-dxva2
         --enable-libmfx
         --enable-d3d11va
-        --enable-ffnvcodec
+        
 
         --disable-vaapi
         --disable-vdpau
